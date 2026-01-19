@@ -1,0 +1,462 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <title>Formulario - WEB NAIN</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <link rel="stylesheet" href="css/style.css">
+</head>
+<body>
+
+<section id="contenedor-dinamico" class="contacto">
+
+<form class="formulario" id="form-reclamo">
+
+  <h1 id="titulo-formulario">Formulario</h1>
+  <p id="fecha-formulario"></p>
+  <section id="contenedor-dinamico" class="contacto">
+
+
+  <div id="seccion-uv24" class="encuesta-likert" style="display:none; border-left:5px solid #a5d8ff;">
+    <h3>Contenido Especial UV 24</h3>
+    <p>Esta pregunta solo la ven los vecinos de la Unidad Vecinal 24.</p>
+  </div>
+
+  <div id="seccion-uv25" class="encuesta-likert" style="display:none; border-left:5px solid #b2f2bb;">
+    <h3>Contenido Especial UV 25</h3>
+    <p>Preguntas específicas para el sector de la UV 25.</p>
+  </div>
+
+  <div id="seccion-uv26" class="encuesta-likert" style="display:none; border-left:5px solid #ffd8a8;">
+    <h3>Contenido Especial UV 26</h3>
+    <p>Gestión territorial para UV 26.</p>
+  </div>
+
+  <input type="text" name="nombre" placeholder="Nombre" required>
+  <input type="text" name="apellido" placeholder="Apellido" required>
+  <input type="email" name="user_email" placeholder="Correo" required>
+  <textarea name="mensaje" placeholder="mensaje" required></textarea>
+
+  <div class="encuesta-seccion">
+    <p class="pregunta-encuesta">¿Desea adjuntar fotos o documentos? (Opcional)</p>
+
+    <label for="archivo-adjunto" class="custom-file-upload">
+      📁 Seleccionar archivos o fotos
+    </label>
+    <input type="file" id="archivo-adjunto" multiple accept="image/*,.pdf" onchange="mostrarPrevisualizacion()">
+    <div id="vista-previa" class="contenedor-previa"></div>
+  </div>
+
+  <div class="botones-finales">
+    <button type="submit" class="btn-enviar-final">Enviar Datos</button>
+    <a href="index.html" class="btn-volver">Volver</a>
+  </div>
+
+</form>
+</section>
+
+<script>
+
+if (dia && mes) fechaEl.innerText = `Reporte para el ${dia} de ${mes}`;
+
+if (uv) {
+  tituloEl.innerText = `Formulario ${uv}`;
+  if (uv.includes("24")) { contenedor.style.borderTop="10px solid #a5d8ff"; document.getElementById('seccion-uv24').style.display='block'; }
+  if (uv.includes("25")) { contenedor.style.borderTop="10px solid #b2f2bb"; document.getElementById('seccion-uv25').style.display='block'; }
+  if (uv.includes("26")) { contenedor.style.borderTop="10px solid #ffd8a8"; document.getElementById('seccion-uv26').style.display='block'; }
+}
+
+function mostrarPrevisualizacion() {
+  const input = document.getElementById('archivo-adjunto');
+  const vista = document.getElementById('vista-previa');
+  vista.innerHTML = "";
+
+  Array.from(input.files).forEach(file => {
+    const div = document.createElement('div');
+    div.className = 'previa-item';
+
+    if (file.type.startsWith('image/')) {
+      const reader = new FileReader();
+      reader.onload = e => {
+        const img = document.createElement('img');
+        img.src = e.target.result;
+        div.appendChild(img);
+      };
+      reader.readAsDataURL(file);
+    } else {
+      div.innerHTML = "📄 " + file.name.substring(0,10);
+    }
+    vista.appendChild(div);
+  });
+}
+</script>
+
+<script>
+  console.log("SCRIPT CARGADO");
+
+  const params = new URLSearchParams(window.location.search);
+  const uv = params.get("uv");
+  
+  console.log("UV:", uv);
+
+  const titulo = document.getElementById("titulo-formulario");
+  const fecha = document.getElementById("fecha-formulario");
+
+  if (!titulo) {
+    console.error("NO ENCUENTRA EL TITULO");
+  } else {
+    if (uv === "UV 24") {
+      titulo.textContent = "Formulario Unidad Vecinal 24";
+    } else if (uv === "UV 25") {
+      titulo.textContent = "Formulario Unidad Vecinal 25";
+    } else if (uv === "UV 26") {
+      titulo.textContent = "Formulario Unidad Vecinal 26";
+    } else if (uv === "Casos Especiales") {
+      titulo.textContent = "Formulario Casos Especiales";
+    } else {
+      titulo.textContent = "Formulario";
+    }
+  }
+
+  if (dia && mes && fecha) {
+    fecha.textContent = `Fecha: ${dia} de ${mes}`;
+  }
+</script>
+
+<script type="text/javascript" src="https://cdn.jsdelivr.net/npm/@emailjs/browser@3/dist/email.min.js"></script>
+
+<script type="text/javascript">
+  (function() {
+    
+    emailjs.init("TU_PUBLIC_KEY_AQUI");
+  })();
+
+  document.addEventListener('DOMContentLoaded', function() {
+    const form = document.getElementById('form-reclamo');
+    
+    const btn = form.querySelector('.btn-enviar-final');
+
+    form.addEventListener('submit', function(event) {
+      event.preventDefault(); 
+
+      btn.innerText = 'Enviando...';
+      btn.style.opacity = '0.5';
+      btn.disabled = true;
+
+      const serviceID = 'default_service'; 
+      const templateID = 'TU_TEMPLATE_ID_AQUI';
+
+      emailjs.sendForm(serviceID, templateID, this)
+        .then(() => {
+          btn.innerText = '¡Datos Enviados!';
+          btn.style.backgroundColor = '#4caf50'; 
+          alert('¡Gracias! El reporte ha sido enviado exitosamente a Gmail.');
+          form.reset(); 
+          btn.disabled = false;
+          btn.style.opacity = '1';
+        }, (err) => {
+          btn.innerText = 'Error al enviar';
+          btn.style.backgroundColor = '#f44336'; 
+          btn.disabled = false;
+          btn.style.opacity = '1';
+          alert("Error: No se pudo enviar el correo. Verifica tu conexión.");
+          console.error("EmailJS Error:", err);
+        });
+    });
+  });
+</script>
+
+</body>
+</html>
+
+
+<div class="encuesta-likert">
+    <h3>Evaluación de Seguridad y Convivencia</h3>
+    <p class="instruccion">Por favor, marque su nivel de acuerdo con las siguientes afirmaciones (1: Muy en desacuerdo, 4: Muy de acuerdo)</p>
+
+    <div class="tabla-responsiva">
+        <table>
+            <thead>
+                <tr>
+                    <th>Afirmación</th>
+                    <th>1</th>
+                    <th>2</th>
+                    <th>3</th>
+                    <th>4</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr>
+                    <td><strong>Prevención:</strong> Red de comunicación rápida frente a delitos.</td>
+                    <td><input type="radio" name="prevencion" value="1" required></td>
+                    <td><input type="radio" name="prevencion" value="2"></td>
+                    <td><input type="radio" name="prevencion" value="3"></td>
+                    <td><input type="radio" name="prevencion" value="4"></td>
+                </tr>
+                <tr>
+                    <td><strong>Confianza:</strong> Vecinos acuden para resolver problemas.</td>
+                    <td><input type="radio" name="confianza" value="1" required></td>
+                    <td><input type="radio" name="confianza" value="2"></td>
+                    <td><input type="radio" name="confianza" value="3"></td>
+                    <td><input type="radio" name="confianza" value="4"></td>
+                </tr>
+                <tr>
+                    <td><strong>Respuesta:</strong> Coordinación fluida con fuerzas policiales.</td>
+                    <td><input type="radio" name="respuesta" value="1" required></td>
+                    <td><input type="radio" name="respuesta" value="2"></td>
+                    <td><input type="radio" name="respuesta" value="3"></td>
+                    <td><input type="radio" name="respuesta" value="4"></td>
+                </tr>
+                <tr>
+                    <td><strong>Incidencia:</strong> Demandas priorizadas por gestión municipal.</td>
+                    <td><input type="radio" name="incidencia" value="1" required></td>
+                    <td><input type="radio" name="incidencia" value="2"></td>
+                    <td><input type="radio" name="incidencia" value="3"></td>
+                    <td><input type="radio" name="incidencia" value="4"></td>
+                </tr>
+            </tbody>
+        </table>
+    </div>
+
+    <div class="leyenda-likert">
+        <span>1: Muy en desacuerdo</span>
+        <span>2: En desacuerdo</span>
+        <span>3: De acuerdo</span>
+        <span>4: Muy de acuerdo</span>
+    </div>
+</div>
+
+<div class="encuesta-likert">
+    <h3>Infraestructura y Gestión Deportiva</h3>
+    <div class="tabla-responsiva">
+        <table>
+            <thead>
+                <tr>
+                    <th>Afirmación</th>
+                    <th>1</th>
+                    <th>2</th>
+                    <th>3</th>
+                    <th>4</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr>
+                    <td><strong>Infraestructura:</strong> Los espacios deportivos (canchas/plazas) están en condiciones óptimas para el uso vecinal.</td>
+                    <td><input type="radio" name="infraestructura" value="1" required></td>
+                    <td><input type="radio" name="infraestructura" value="2"></td>
+                    <td><input type="radio" name="infraestructura" value="3"></td>
+                    <td><input type="radio" name="infraestructura" value="4"></td>
+                </tr>
+                <tr>
+                    <td><strong>Acceso:</strong> Las organizaciones deportivas garantizan que todos los vecinos puedan participar sin exclusiones.</td>
+                    <td><input type="radio" name="acceso" value="1" required></td>
+                    <td><input type="radio" name="acceso" value="2"></td>
+                    <td><input type="radio" name="acceso" value="3"></td>
+                    <td><input type="radio" name="acceso" value="4"></td>
+                </tr>
+                <tr>
+                    <td><strong>Prevención Social:</strong> El deporte en el barrio funciona como una herramienta real para alejar a jóvenes del riesgo social.</td>
+                    <td><input type="radio" name="prevencion_social" value="1" required></td>
+                    <td><input type="radio" name="prevencion_social" value="2"></td>
+                    <td><input type="radio" name="prevencion_social" value="3"></td>
+                    <td><input type="radio" name="prevencion_social" value="4"></td>
+                </tr>
+                <tr>
+                    <td><strong>Gestión:</strong> Se realizan actividades físicas constantes que integran a distintas generaciones.</td>
+                    <td><input type="radio" name="gestion_deportiva" value="1" required></td>
+                    <td><input type="radio" name="gestion_deportiva" value="2"></td>
+                    <td><input type="radio" name="gestion_deportiva" value="3"></td>
+                    <td><input type="radio" name="gestion_deportiva" value="4"></td>
+                </tr>
+            </tbody>
+        </table>
+    </div>
+
+    <div class="leyenda-likert">
+        <span>1: Muy en desacuerdo</span>
+        <span>2: En desacuerdo</span>
+        <span>3: De acuerdo</span>
+        <span>4: Muy de acuerdo</span>
+    </div>
+
+</div>
+
+<div class="encuesta-likert">
+    <h3>Cultura e Identidad Local</h3>
+    <div class="tabla-responsiva">
+        <table>
+            <thead>
+                <tr>
+                    <th>Afirmación</th>
+                    <th>1</th>
+                    <th>2</th>
+                    <th>3</th>
+                    <th>4</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr>
+                    <td><strong>Identidad:</strong> Nuestra organización rescata y valora activamente la historia y las tradiciones locales.</td>
+                    <td><input type="radio" name="identidad" value="1" required></td>
+                    <td><input type="radio" name="identidad" value="2"></td>
+                    <td><input type="radio" name="identidad" value="3"></td>
+                    <td><input type="radio" name="identidad" value="4"></td>
+                </tr>
+                <tr>
+                    <td><strong>Pertenencia:</strong> Los vecinos demuestran orgullo y compromiso al participar en las festividades del barrio.</td>
+                    <td><input type="radio" name="pertenencia" value="1" required></td>
+                    <td><input type="radio" name="pertenencia" value="2"></td>
+                    <td><input type="radio" name="pertenencia" value="3"></td>
+                    <td><input type="radio" name="pertenencia" value="4"></td>
+                </tr>
+                <tr>
+                    <td><strong>Fomento:</strong> Se brindan espacios reales para que los artistas y talentos del barrio muestren su trabajo.</td>
+                    <td><input type="radio" name="fomento" value="1" required></td>
+                    <td><input type="radio" name="fomento" value="2"></td>
+                    <td><input type="radio" name="fomento" value="3"></td>
+                    <td><input type="radio" name="fomento" value="4"></td>
+                </tr>
+                <tr>
+                    <td><strong>Oferta Cultural:</strong> Los talleres artísticos disponibles responden a los intereses y necesidades de la comunidad.</td>
+                    <td><input type="radio" name="oferta_cultural" value="1" required></td>
+                    <td><input type="radio" name="oferta_cultural" value="2"></td>
+                    <td><input type="radio" name="oferta_cultural" value="3"></td>
+                    <td><input type="radio" name="oferta_cultural" value="4"></td>
+                </tr>
+            </tbody>
+        </table>
+    </div>
+
+    <div class="leyenda-likert">
+        <span>1: Muy en desacuerdo</span>
+        <span>2: En desacuerdo</span>
+        <span>3: De acuerdo</span>
+        <span>4: Muy de acuerdo</span>
+    </div>
+
+</div>
+
+<div class="encuesta-likert">
+    <h3>Percepción de Seguridad Comunitaria</h3>
+    <div class="tabla-responsiva">
+        <table>
+            <thead>
+                <tr>
+                    <th>Afirmación</th>
+                    <th>1</th>
+                    <th>2</th>
+                    <th>3</th>
+                    <th>4</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr>
+                    <td><strong>Prevención:</strong> Nuestra organización tiene una red de comunicación (WhatsApp/Alarmas) rápida y efectiva frente a delitos.</td>
+                    <td><input type="radio" name="prev_seg" value="1" required></td>
+                    <td><input type="radio" name="prev_seg" value="2"></td>
+                    <td><input type="radio" name="prev_seg" value="3"></td>
+                    <td><input type="radio" name="prev_seg" value="4"></td>
+                </tr>
+                <tr>
+                    <td><strong>Confianza:</strong> Los vecinos acuden a la organización para denunciar o resolver problemas de convivencia.</td>
+                    <td><input type="radio" name="conf_seg" value="1" required></td>
+                    <td><input type="radio" name="conf_seg" value="2"></td>
+                    <td><input type="radio" name="conf_seg" value="3"></td>
+                    <td><input type="radio" name="conf_seg" value="4"></td>
+                </tr>
+                <tr>
+                    <td><strong>Respuesta Inst.:</strong> Existe una coordinación fluida y recíproca entre la organización y las fuerzas policiales.</td>
+                    <td><input type="radio" name="resp_inst" value="1" required></td>
+                    <td><input type="radio" name="resp_inst" value="2"></td>
+                    <td><input type="radio" name="resp_inst" value="3"></td>
+                    <td><input type="radio" name="resp_inst" value="4"></td>
+                </tr>
+                <tr>
+                    <td><strong>Incidencia:</strong> Sentimos que nuestras demandas de seguridad son priorizadas por la gestión municipal.</td>
+                    <td><input type="radio" name="incid_seg" value="1" required></td>
+                    <td><input type="radio" name="incid_seg" value="2"></td>
+                    <td><input type="radio" name="incid_seg" value="3"></td>
+                    <td><input type="radio" name="incid_seg" value="4"></td>
+                </tr>
+            </tbody>
+        </table>
+    </div>
+    <div class="leyenda-likert">
+        <span>1: Muy en desacuerdo</span>
+        <span>2: En desacuerdo</span>
+        <span>3: De acuerdo</span>
+        <span>4: Muy de acuerdo</span>
+    </div>
+
+</div>
+<div class="botones-finales">
+    <button type="submit" class="btn-enviar-final">Enviar Datos</button>
+    <a href="index.html" class="btn-volver">Volver</a>
+
+    <script>
+
+        const dia = params.get('dia');
+        const mes = params.get('mes');
+        
+        const tituloEl = document.getElementById('titulo-dinamico');
+        const fechaEl = document.getElementById('info-fecha');
+        const contenedor = document.getElementById('contenedor-dinamico');
+
+        if (dia && mes) {
+            fechaEl.innerText = `Reporte para el ${dia} de ${mes}`;
+        }
+
+        if (uv) {
+    tituloEl.innerText = `FORMULARIO ${uv.toUpperCase()}`;
+    
+    if (uv.includes("24")) {
+        contenedor.style.borderTop = "10px solid #a5d8ff";
+        document.getElementById('seccion-uv24').style.display = 'block'; 
+    } 
+    else if (uv.includes("25")) {
+        contenedor.style.borderTop = "10px solid #b2f2bb";
+        document.getElementById('seccion-uv25').style.display = 'block'; 
+    } 
+    else if (uv.includes("26")) {
+        contenedor.style.borderTop = "10px solid #ffd8a8";
+        document.getElementById('seccion-uv26').style.display = 'block'; 
+    } 
+    else if (uv.includes("Especiales")) {
+        contenedor.style.borderTop = "10px solid #ffa8a8";
+    }
+}
+        
+
+        function mostrarPrevisualizacion() {
+            const input = document.getElementById('archivo-adjunto');
+            const vistaPrevia = document.getElementById('vista-previa');
+            
+            vistaPrevia.innerHTML = ""; 
+
+            if (input.files) {
+                Array.from(input.files).forEach(archivo => {
+                    const div = document.createElement('div');
+                    div.className = 'previa-item';
+
+                    if (archivo.type.startsWith('image/')) {
+                        const reader = new FileReader();
+                        reader.onload = function(e) {
+                            const img = document.createElement('img');
+                            img.src = e.target.result;
+                            div.appendChild(img);
+                        }
+                        reader.readAsDataURL(archivo);
+                    } else {
+                        const icono = document.createElement('span');
+                        icono.style.fontSize = "10px";
+                        icono.innerText = "📄 " + archivo.name.substring(0, 10) + "...";
+                        div.appendChild(icono);
+                    }
+
+                    vistaPrevia.appendChild(div);
+                });
+            }
+        }
+    </script>
+</body>
+</html>
