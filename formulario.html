@@ -1,0 +1,267 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <title>Formulario Completo - WEB NAIN</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <link rel="stylesheet" href="css/style.css">
+  
+  <script type="text/javascript" src="https://cdn.jsdelivr.net/npm/@emailjs/browser@3/dist/email.min.js"></script>
+</head>
+<body>
+
+<section id="contenedor-dinamico" class="contacto">
+  <form class="formulario" id="form-reclamo">
+    
+    <h1 id="titulo-formulario">Formulario</h1>
+    <p id="fecha-formulario"></p>
+
+    <div id="seccion-uv24" class="encuesta-likert" style="display:none; border-left:5px solid #a5d8ff;">
+        <h3>Contenido Especial UV 24</h3>
+        <p>Preguntas exclusivas para la Unidad Vecinal 24.</p>
+    </div>
+    <div id="seccion-uv25" class="encuesta-likert" style="display:none; border-left:5px solid #b2f2bb;">
+        <h3>Contenido Especial UV 25</h3>
+        <p>Preguntas exclusivas para la Unidad Vecinal 25.</p>
+    </div>
+    <div id="seccion-uv26" class="encuesta-likert" style="display:none; border-left:5px solid #ffd8a8;">
+        <h3>Contenido Especial UV 26</h3>
+        <p>Preguntas exclusivas para la Unidad Vecinal 26.</p>
+    </div>
+
+    <div class="encuesta-seccion">
+        <input type="text" name="nombre" placeholder="Nombre" required>
+        <input type="text" name="apellido" placeholder="Apellido" required>
+        <input type="email" name="user_email" placeholder="Correo" required>
+        <textarea name="mensaje" placeholder="Mensaje adicional..." required></textarea>
+    </div>
+
+    <div class="encuesta-seccion" id="seccion-horas">
+        <h3>Solicitud de Hora de Atención</h3>
+        <p id="instruccion-horario" class="instruccion">Seleccione su bloque:</p>
+        <div id="contenedor-grid-horas" class="contenedor-grid-horas"></div>
+    </div>
+
+    (1- MUY EN DESACUERDO) (2. EN DESACUERDO) (3- DEACUERDO) (4- MUY DEACUERDO)
+
+    <div class="encuesta-likert">
+        <h3>1. Evaluación de Seguridad y Convivencia</h3>
+        <div class="tabla-responsiva">
+            <table>
+                <thead><tr><th>Afirmación</th><th>1</th><th>2</th><th>3</th><th>4</th></tr></thead>
+                <tbody>
+                    <tr><td>Prevención: Red de comunicación rápida frente a delitos.</td>
+                        <td><input type="radio" name="seg_prevencion" value="1" required></td>
+                        <td><input type="radio" name="seg_prevencion" value="2"></td>
+                        <td><input type="radio" name="seg_prevencion" value="3"></td>
+                        <td><input type="radio" name="seg_prevencion" value="4"></td></tr>
+                    <tr><td>Confianza: Vecinos acuden para resolver problemas.</td>
+                        <td><input type="radio" name="seg_confianza" value="1" required></td>
+                        <td><input type="radio" name="seg_confianza" value="2"></td>
+                        <td><input type="radio" name="seg_confianza" value="3"></td>
+                        <td><input type="radio" name="seg_confianza" value="4"></td></tr>
+                    <tr><td>Respuesta: Coordinación fluida con fuerzas policiales.</td>
+                        <td><input type="radio" name="seg_respuesta" value="1" required></td>
+                        <td><input type="radio" name="seg_respuesta" value="2"></td>
+                        <td><input type="radio" name="seg_respuesta" value="3"></td>
+                        <td><input type="radio" name="seg_respuesta" value="4"></td></tr>
+                    <tr><td>Incidencia: Demandas priorizadas por gestión municipal.</td>
+                        <td><input type="radio" name="seg_incidencia" value="1" required></td>
+                        <td><input type="radio" name="seg_incidencia" value="2"></td>
+                        <td><input type="radio" name="seg_incidencia" value="3"></td>
+                        <td><input type="radio" name="seg_incidencia" value="4"></td></tr>
+                </tbody>
+            </table>
+        </div>
+    </div>
+
+    (1- MUY EN DESACUERDO) (2. EN DESACUERDO) (3- DEACUERDO) (4- MUY DEACUERDO)
+
+    <div class="encuesta-likert">
+        <h3>2. Infraestructura y Gestión Deportiva</h3>
+        <div class="tabla-responsiva">
+            <table>
+                <thead><tr><th>Afirmación</th><th>1</th><th>2</th><th>3</th><th>4</th></tr></thead>
+                <tbody>
+                    <tr><td>Infraestructura: Espacios deportivos en condiciones óptimas.</td>
+                        <td><input type="radio" name="dep_infra" value="1" required></td>
+                        <td><input type="radio" name="dep_infra" value="2"></td>
+                        <td><input type="radio" name="dep_infra" value="3"></td>
+                        <td><input type="radio" name="dep_infra" value="4"></td></tr>
+                    <tr><td>Acceso: Participación garantizada sin exclusiones.</td>
+                        <td><input type="radio" name="dep_acceso" value="1" required></td>
+                        <td><input type="radio" name="dep_acceso" value="2"></td>
+                        <td><input type="radio" name="dep_acceso" value="3"></td>
+                        <td><input type="radio" name="dep_acceso" value="4"></td></tr>
+                    <tr><td>Prevención Social: Deporte aleja a jóvenes del riesgo.</td>
+                        <td><input type="radio" name="dep_social" value="1" required></td>
+                        <td><input type="radio" name="dep_social" value="2"></td>
+                        <td><input type="radio" name="dep_social" value="3"></td>
+                        <td><input type="radio" name="dep_social" value="4"></td></tr>
+                    <tr><td>Gestión: Actividades físicas constantes integradoras.</td>
+                        <td><input type="radio" name="dep_gestion" value="1" required></td>
+                        <td><input type="radio" name="dep_gestion" value="2"></td>
+                        <td><input type="radio" name="dep_gestion" value="3"></td>
+                        <td><input type="radio" name="dep_gestion" value="4"></td></tr>
+                </tbody>
+            </table>
+        </div>
+    </div>
+
+    (1- MUY EN DESACUERDO) (2. EN DESACUERDO) (3- DEACUERDO) (4- MUY DEACUERDO)
+
+    <div class="encuesta-likert">
+        <h3>3. Cultura e Identidad Local</h3>
+        <div class="tabla-responsiva">
+            <table>
+                <thead><tr><th>Afirmación</th><th>1</th><th>2</th><th>3</th><th>4</th></tr></thead>
+                <tbody>
+                    <tr><td>Identidad: Rescate de historia y tradiciones locales.</td>
+                        <td><input type="radio" name="cul_identidad" value="1" required></td>
+                        <td><input type="radio" name="cul_identidad" value="2"></td>
+                        <td><input type="radio" name="cul_identidad" value="3"></td>
+                        <td><input type="radio" name="cul_identidad" value="4"></td></tr>
+                    <tr><td>Pertenencia: Orgullo y compromiso en festividades.</td>
+                        <td><input type="radio" name="cul_pertenencia" value="1" required></td>
+                        <td><input type="radio" name="cul_pertenencia" value="2"></td>
+                        <td><input type="radio" name="cul_pertenencia" value="3"></td>
+                        <td><input type="radio" name="cul_pertenencia" value="4"></td></tr>
+                    <tr><td>Fomento: Espacios para artistas y talentos locales.</td>
+                        <td><input type="radio" name="cul_fomento" value="1" required></td>
+                        <td><input type="radio" name="cul_fomento" value="2"></td>
+                        <td><input type="radio" name="cul_fomento" value="3"></td>
+                        <td><input type="radio" name="cul_fomento" value="4"></td></tr>
+                    <tr><td>Oferta: Talleres responden a intereses vecinales.</td>
+                        <td><input type="radio" name="cul_oferta" value="1" required></td>
+                        <td><input type="radio" name="cul_oferta" value="2"></td>
+                        <td><input type="radio" name="cul_oferta" value="3"></td>
+                        <td><input type="radio" name="cul_oferta" value="4"></td></tr>
+                </tbody>
+            </table>
+        </div>
+    </div>
+
+    (1- MUY EN DESACUERDO) (2. EN DESACUERDO) (3- DEACUERDO) (4- MUY DEACUERDO)
+
+    <div class="encuesta-likert">
+        <h3>4. Percepción de Seguridad Comunitaria</h3>
+        <div class="tabla-responsiva">
+            <table>
+                <thead><tr><th>Afirmación</th><th>1</th><th>2</th><th>3</th><th>4</th></tr></thead>
+                <tbody>
+                    <tr><td>Prevención: Red de comunicación (WhatsApp) efectiva.</td>
+                        <td><input type="radio" name="per_prevencion" value="1" required></td>
+                        <td><input type="radio" name="per_prevencion" value="2"></td>
+                        <td><input type="radio" name="per_prevencion" value="3"></td>
+                        <td><input type="radio" name="per_prevencion" value="4"></td></tr>
+                    <tr><td>Confianza: Vecinos denuncian problemas de convivencia.</td>
+                        <td><input type="radio" name="per_confianza" value="1" required></td>
+                        <td><input type="radio" name="per_confianza" value="2"></td>
+                        <td><input type="radio" name="per_confianza" value="3"></td>
+                        <td><input type="radio" name="per_confianza" value="4"></td></tr>
+                    <tr><td>Respuesta Inst.: Coordinación fluida con policías.</td>
+                        <td><input type="radio" name="per_respuesta" value="1" required></td>
+                        <td><input type="radio" name="per_respuesta" value="2"></td>
+                        <td><input type="radio" name="per_respuesta" value="3"></td>
+                        <td><input type="radio" name="per_respuesta" value="4"></td></tr>
+                    <tr><td>Incidencia: Demandas priorizadas por el municipio.</td>
+                        <td><input type="radio" name="per_incidencia" value="1" required></td>
+                        <td><input type="radio" name="per_incidencia" value="2"></td>
+                        <td><input type="radio" name="per_incidencia" value="3"></td>
+                        <td><input type="radio" name="per_incidencia" value="4"></td></tr>
+                </tbody>
+            </table>
+        </div>
+    </div>
+
+    <div class="encuesta-seccion">
+        <p class="pregunta-encuesta">¿Desea adjuntar fotos o documentos? (Opcional)</p>
+        <label for="archivo-adjunto" class="custom-file-upload">📁 Seleccionar archivos</label>
+        <input type="file" id="archivo-adjunto" name="mi_archivo" multiple accept="image/*,.pdf" onchange="mostrarPrevisualizacion()">
+        <div id="vista-previa" class="contenedor-previa"></div>
+    </div>
+
+    <div class="area-acciones-final">
+        <button type="submit" id="btn-enviar-todo" class="btn-principal">Enviar Todo</button>
+        <button type="button" onclick="window.history.back();" class="btn-volver-final">Volver</button>
+    </div>
+  </form>
+</section>
+
+<script>
+    // Lógica URL y Títulos
+    const params = new URLSearchParams(window.location.search);
+    const uv = params.get("uv") || "General";
+    const dia = params.get("dia");
+    const mes = params.get("mes");
+
+    document.getElementById("titulo-formulario").innerText = `Formulario ${uv}`;
+    if (dia && mes) document.getElementById("fecha-formulario").innerText = `Reporte para el ${dia} de ${mes}`;
+
+    // Mostrar bloques UV
+    if (uv.includes("24")) document.getElementById('seccion-uv24').style.display = 'block';
+    if (uv.includes("25")) document.getElementById('seccion-uv25').style.display = 'block';
+    if (uv.includes("26")) document.getElementById('seccion-uv26').style.display = 'block';
+
+    // Horarios
+    const grid = document.getElementById('contenedor-grid-horas');
+    const bloques = ["17:00-18:00", "18:00-19:00", "19:00-20:00", "20:00-21:00", "21:00-22:00", "22:00-23:00"];
+    grid.innerHTML = bloques.map(b => `
+        <label class="hora-card">
+            <input type="radio" name="hora_seleccionada" value="${b}" required>
+            <div class="hora-contenido"><span>🕒 ${b}</span></div>
+        </label>`).join('');
+
+    // Previsualización
+    function mostrarPrevisualizacion() {
+        const input = document.getElementById('archivo-adjunto');
+        const vista = document.getElementById('vista-previa');
+        vista.innerHTML = "";
+        Array.from(input.files).forEach(file => {
+            const div = document.createElement('div');
+            div.className = 'previa-item';
+            if (file.type.startsWith('image/')) {
+                const reader = new FileReader();
+                reader.onload = e => div.innerHTML = `<img src="${e.target.result}" style="width:100%;height:100%;object-fit:cover;">`;
+                reader.readAsDataURL(file);
+            } else { div.innerText = "📄 " + file.name.substring(0,8); }
+            vista.appendChild(div);
+        });
+    }
+
+(function() { 
+    emailjs.init("tZHnpxwzmP21nalv9"); 
+})();
+
+document.getElementById('form-reclamo').addEventListener('submit', function(event) {
+    event.preventDefault();
+    
+    const btn = document.getElementById('btn-enviar-todo');
+    const textoOriginal = btn.innerText;
+    
+    btn.innerText = 'Enviando Reporte y Archivos...';
+    btn.disabled = true;
+
+    emailjs.sendForm('service_njjh059', 'template_o82hbxi', this)
+        .then(() => {
+            alert('¡Éxito! El formulario y las fotos se enviaron correctamente.');
+            
+            this.reset(); 
+            if(typeof renderizarFotos === "function") {
+                listaGlobalArchivos = new DataTransfer();
+                renderizarFotos(); 
+            }
+            
+            btn.innerText = textoOriginal;
+        })
+        .catch((err) => {
+            alert('Hubo un error al enviar: ' + JSON.stringify(err));
+            btn.innerText = 'Reintentar Envío';
+        })
+        .finally(() => {
+            btn.disabled = false;
+        });
+});
+</script>
+</body>
+</html>

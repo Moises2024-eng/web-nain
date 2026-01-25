@@ -1,0 +1,57 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>WEB NAIN - Gestión Territorial</title>
+  <link rel="stylesheet" href="css/style.css">
+  <script defer src="https://unpkg.com/alpinejs@3.x.x/dist/cdn.min.js"></script>
+</head>
+
+<body>
+
+<section class="hero">
+  <h1>Gestiones Territoriales</h1>
+  <p class="subtitulo">Calendario de Atención Vecinal</p>
+</section>
+
+<section class="calendario" x-data="calendarioNain()">
+
+  <div class="controles-mes">
+    <button @click="mesAnterior()">&#60;</button>
+    <h2 x-text="nombreMesActual + ' ' + año"></h2>
+    <button @click="mesSiguiente()">&#62;</button>
+  </div>
+
+  <div class="calendario-real">
+    <template x-for="diaH in diasHeader">
+      <div class="dia-header" x-text="diaH"></div>
+    </template>
+
+    <template x-for="vacio in espaciosVacios">
+      <div class="dia vacio"></div>
+    </template>
+
+    <template x-for="d in diasEnMes" :key="d">
+      <div
+        :class="'dia ' + obtenerClaseUV(d)"
+        @click="irAlFormulario(d)">
+
+        <span x-text="d"></span><br>
+        <small x-text="obtenerTextoUV(d)"></small>
+      </div>
+    </template>
+  </div>
+</section>
+
+<a href="https://wa.me/tu-numero-aqui" class="wsp-flotante" target="_blank">
+  <img src="https://upload.wikimedia.org/wikipedia/commons/6/6b/WhatsApp.svg" alt="WhatsApp" class="wsp-icon">
+  <span>Contáctanos por WSP</span>
+</a>
+
+<script src="js/calendario.js"></script>
+
+</div>
+</div>
+</body>
+</html>
