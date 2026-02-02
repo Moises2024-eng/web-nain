@@ -127,21 +127,17 @@ function generarBotonesHoras(uv) {
       });
   });
 
-function irAlFormulario(dia) {
-    // 1. Obtener el nombre del mes que está visible en el calendario
-    const mesActual = document.getElementById('nombre-mes').innerText; 
-    const fechaCompleta = `${dia} de ${mesActual}`;
+function irAlFormulario(d) {
+  
+    const fechaTexto = `${d} de ${this.nombreMesActual} ${this.año}`;
     
-    // 2. Escribir la fecha en el <p> para que el usuario la vea
-    document.getElementById('fecha-formulario').innerText = "Fecha seleccionada: " + fechaCompleta;
+    const inputOculto = document.getElementById('fecha_reporte_input');
+    if (inputOculto) {
+        inputOculto.value = fechaTexto;
+    }
+
+    const uvTexto = this.obtenerTextoUV(d);
     
-    // 3. Escribir la fecha en el input oculto para EmailJS
-    document.getElementById('fecha_reporte_input').value = fechaCompleta;
-
-    // 4. Cambiar el título del formulario (opcional, ya que tienes el h1)
-    document.getElementById('titulo-formulario').innerText = "Formulario de Reporte";
-
-    // 5. Scroll suave al formulario
+    document.getElementById('fecha-formulario').innerText = "Reporte para el " + fechaTexto;
     document.getElementById('form-reclamo').scrollIntoView({ behavior: 'smooth' });
 }
-

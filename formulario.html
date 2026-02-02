@@ -10,6 +10,8 @@
 </head>
 <body>
 
+<input type="hidden" name="fecha_reporte" id="fecha_reporte_input">
+
 <section id="contenedor-dinamico" class="contacto">
   <form class="formulario" id="form-reclamo">
     <input type="hidden" name="fecha_reporte" id="fecha_reporte_input">
@@ -139,6 +141,7 @@
         </table>
     </div>
 </div>
+
 <p class="leyenda-encuesta">(1- MUY EN DESACUERDO) (2. EN DESACUERDO) (3- DE ACUERDO) (4- MUY DE ACUERDO)</p>
 
 <div class="encuesta-likert">
@@ -171,7 +174,6 @@
         </table>
     </div>
 </div>
-<p class="leyenda-encuesta">(1- MUY EN DESACUERDO) (2. EN DESACUERDO) (3- DE ACUERDO) (4- MUY DE ACUERDO)</p>
 
     <div class="encuesta-seccion">
         <p class="pregunta-encuesta">¿Desea adjuntar fotos o documentos? (Opcional)</p>
@@ -188,7 +190,6 @@
 </section>
 
 <script>
-    // Lógica URL y Títulos
     const params = new URLSearchParams(window.location.search);
     const uv = params.get("uv") || "General";
     const dia = params.get("dia");
@@ -197,12 +198,10 @@
     document.getElementById("titulo-formulario").innerText = `Formulario ${uv}`;
     if (dia && mes) document.getElementById("fecha-formulario").innerText = `Reporte para el ${dia} de ${mes}`;
 
-    // Mostrar bloques UV
     if (uv.includes("24")) document.getElementById('seccion-uv24').style.display = 'block';
     if (uv.includes("25")) document.getElementById('seccion-uv25').style.display = 'block';
     if (uv.includes("26")) document.getElementById('seccion-uv26').style.display = 'block';
 
-    // Horarios
     const grid = document.getElementById('contenedor-grid-horas');
     const bloques = ["17:00-18:00", "18:00-19:00", "19:00-20:00", "20:00-21:00", "21:00-22:00", "22:00-23:00"];
     grid.innerHTML = bloques.map(b => `
@@ -211,7 +210,6 @@
             <div class="hora-contenido"><span>🕒 ${b}</span></div>
         </label>`).join('');
 
-    // Previsualización
     function mostrarPrevisualizacion() {
         const input = document.getElementById('archivo-adjunto');
         const vista = document.getElementById('vista-previa');
