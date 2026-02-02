@@ -193,26 +193,21 @@
     const dia = params.get("dia");
     const mes = params.get("mes");
 
-    // 1. Configurar Título y Visualización de fecha
     document.getElementById("titulo-formulario").innerText = `Formulario ${uv}`;
     
     if (dia && mes) {
         const fechaTexto = `${dia} de ${mes}`;
-        // Muestra en pantalla
         document.getElementById("fecha-formulario").innerText = `Reporte para el ${fechaTexto}`;
-        // GUARDA PARA EMAILJS (Muy importante)
         const inputOculto = document.getElementById("fecha_reporte_input");
         if(inputOculto) {
             inputOculto.value = fechaTexto;
         }
     }
 
-    // 2. Mostrar secciones según UV
     if (uv.includes("24")) document.getElementById('seccion-uv24').style.display = 'block';
     if (uv.includes("25")) document.getElementById('seccion-uv25').style.display = 'block';
     if (uv.includes("26")) document.getElementById('seccion-uv26').style.display = 'block';
 
-    // 3. Renderizar Horarios
     const grid = document.getElementById('contenedor-grid-horas');
     const bloques = ["17:00-18:00", "18:00-19:00", "19:00-20:00", "20:00-21:00", "21:00-22:00", "22:00-23:00"];
     grid.innerHTML = bloques.map(b => `
@@ -221,7 +216,6 @@
             <div class="hora-contenido"><span>🕒 ${b}</span></div>
         </label>`).join('');
 
-    // 4. Configuración EmailJS
     (function() { 
         emailjs.init("tZHnpxwzmP21nalv9"); 
     })();
@@ -233,7 +227,6 @@
         btn.innerText = 'Enviando Reporte...';
         btn.disabled = true;
 
-        // Enviamos el formulario completo (incluyendo el input oculto de fecha)
         emailjs.sendForm('service_njjh059', 'template_o82hbxi', this)
             .then(() => {
                 alert('¡Éxito! El formulario se envió con la fecha: ' + document.getElementById("fecha_reporte_input").value);

@@ -47,11 +47,9 @@ function calendarioNain() {
       if (ds === 5 || ds === 6) return 'UV 26';
     },
 
-    // ESTA FUNCIÓN ES LA CLAVE: Envía los datos a la otra página
     irAlFormulario(d) {
       const uvTexto = this.obtenerTextoUV(d);
       const mesNombre = this.nombreMesActual;
-      // Redirige a formulario.html llevando el día, el mes y la UV en la URL
       window.location.href = `formulario.html?dia=${d}&mes=${mesNombre}&uv=${encodeURIComponent(uvTexto)}`;
     }
   }
