@@ -195,13 +195,26 @@
     const dia = params.get("dia");
     const mes = params.get("mes");
 
+    // 1. Configurar Título y Visualización de fecha
     document.getElementById("titulo-formulario").innerText = `Formulario ${uv}`;
-    if (dia && mes) document.getElementById("fecha-formulario").innerText = `Reporte para el ${dia} de ${mes}`;
+    
+    if (dia && mes) {
+        const fechaTexto = `${dia} de ${mes}`;
+        // Muestra en pantalla
+        document.getElementById("fecha-formulario").innerText = `Reporte para el ${fechaTexto}`;
+        // GUARDA PARA EMAILJS (Muy importante)
+        const inputOculto = document.getElementById("fecha_reporte_input");
+        if(inputOculto) {
+            inputOculto.value = fechaTexto;
+        }
+    }
 
+    // 2. Mostrar secciones según UV
     if (uv.includes("24")) document.getElementById('seccion-uv24').style.display = 'block';
     if (uv.includes("25")) document.getElementById('seccion-uv25').style.display = 'block';
     if (uv.includes("26")) document.getElementById('seccion-uv26').style.display = 'block';
 
+    // 3. Renderizar Horarios
     const grid = document.getElementById('contenedor-grid-horas');
     const bloques = ["17:00-18:00", "18:00-19:00", "19:00-20:00", "20:00-21:00", "21:00-22:00", "22:00-23:00"];
     grid.innerHTML = bloques.map(b => `
@@ -210,55 +223,33 @@
             <div class="hora-contenido"><span>🕒 ${b}</span></div>
         </label>`).join('');
 
-    function mostrarPrevisualizacion() {
-        const input = document.getElementById('archivo-adjunto');
-        const vista = document.getElementById('vista-previa');
-        vista.innerHTML = "";
-        Array.from(input.files).forEach(file => {
-            const div = document.createElement('div');
-            div.className = 'previa-item';
-            if (file.type.startsWith('image/')) {
-                const reader = new FileReader();
-                reader.onload = e => div.innerHTML = `<img src="${e.target.result}" style="width:100%;height:100%;object-fit:cover;">`;
-                reader.readAsDataURL(file);
-            } else { div.innerText = "📄 " + file.name.substring(0,8); }
-            vista.appendChild(div);
-        });
-    }
+    // 4. Configuración EmailJS
+    (function() { 
+        emailjs.init("tZHnpxwzmP21nalv9"); 
+    })();
 
-(function() { 
-    emailjs.init("tZHnpxwzmP21nalv9"); 
-})();
+    document.getElementById('form-reclamo').addEventListener('submit', function(event) {
+        event.preventDefault();
+        
+        const btn = document.getElementById('btn-enviar-todo');
+        btn.innerText = 'Enviando Reporte...';
+        btn.disabled = true;
 
-document.getElementById('form-reclamo').addEventListener('submit', function(event) {
-    event.preventDefault();
-    
-    const btn = document.getElementById('btn-enviar-todo');
-    const textoOriginal = btn.innerText;
-    
-    btn.innerText = 'Enviando Reporte y Archivos...';
-    btn.disabled = true;
-
-    emailjs.sendForm('service_njjh059', 'template_o82hbxi', this)
-        .then(() => {
-            alert('¡Éxito! El formulario y las fotos se enviaron correctamente.');
-            
-            this.reset(); 
-            if(typeof renderizarFotos === "function") {
-                listaGlobalArchivos = new DataTransfer();
-                renderizarFotos(); 
-            }
-            
-            btn.innerText = textoOriginal;
-        })
-        .catch((err) => {
-            alert('Hubo un error al enviar: ' + JSON.stringify(err));
-            btn.innerText = 'Reintentar Envío';
-        })
-        .finally(() => {
-            btn.disabled = false;
-        });
-});
+        // Enviamos el formulario completo (incluyendo el input oculto de fecha)
+        emailjs.sendForm('service_njjh059', 'template_o82hbxi', this)
+            .then(() => {
+                alert('¡Éxito! El formulario se envió con la fecha: ' + document.getElementById("fecha_reporte_input").value);
+                this.reset();
+                btn.innerText = 'Enviar Todo';
+            })
+            .catch((err) => {
+                alert('Error: ' + JSON.stringify(err));
+                btn.innerText = 'Reintentar';
+            })
+            .finally(() => {
+                btn.disabled = false;
+            });
+    });
 </script>
 </body>
 </html>

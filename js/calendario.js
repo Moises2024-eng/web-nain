@@ -49,8 +49,9 @@ function calendarioNain() {
 
     irAlFormulario(d) {
       const uvTexto = this.obtenerTextoUV(d);
-      window.location.href =
-        `formulario.html?dia=${d}&mes=${this.nombreMesActual}&uv=${encodeURIComponent(uvTexto)}`;
+      const mesNombre = this.nombreMesActual;
+      // Redirige pasando los parámetros necesarios
+      window.location.href = `formulario.html?dia=${d}&mes=${mesNombre}&uv=${encodeURIComponent(uvTexto)}`;
     }
   }
 }
